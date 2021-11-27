@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server
+  labels:
+    app: server
+spec:
+  containers:
+    - image: localhost:5000/oidc-adventure/server-6818c51d323208aeb565d2018dce3afa:v1
+      name: server
+      env:
+        - name: ISSUER_URL
+          value: https://kubernetes.default.svc:443
+        - name: OIDC_INTENDED_AUDIENCE
+          value: adventures
+      ports:
+        - name: http
+          containerPort: 8080
+      imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+spec:
+  selector:
+    app: server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
