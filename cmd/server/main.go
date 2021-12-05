@@ -25,6 +25,7 @@ func echoHandler() http.HandlerFunc {
 func OIDCVerifyTokenHandler(idTokenVerifier *oidc.IDTokenVerifier, h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("Authorization")
+		fmt.Printf("token:\n%s\n", token)
 		var err error
 		if token == "" {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -33,6 +34,7 @@ func OIDCVerifyTokenHandler(idTokenVerifier *oidc.IDTokenVerifier, h http.Handle
 		}
 		_, err = idTokenVerifier.Verify(context.Background(), token)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte(err.Error()))
 			return
@@ -50,11 +52,13 @@ func main() {
 	issuer := os.Getenv(IssuerUrlEnvVar)
 	provider, err := oidc.NewProvider(oidcCtx, issuer)
 	if err != nil {
-		fmt.Printf("%v", err)
+		fmt.Printf("provider creation failed: %v", err)
 		os.Exit(1)
 	}
 
-	verifier := provider.Verifier(&oidc.Config{ClientID: os.Getenv(OidcIntendedAudienceEnvVar)})
+	verifier := provider.Verifier(&oidc.Config{
+		ClientID:        os.Getenv(OidcIntendedAudienceEnvVar),
+		SkipExpiryCheck: true})
 
 	mux.Handle("/echo", OIDCVerifyTokenHandler(verifier, echoHandler()))
 	s := &http.Server{

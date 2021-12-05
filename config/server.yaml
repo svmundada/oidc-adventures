@@ -6,7 +6,7 @@ metadata:
     app: server
 spec:
   containers:
-    - image: localhost:5000/oidc-adventure/server-6818c51d323208aeb565d2018dce3afa:v1
+    - image: localhost:5000/oidc-adventure/server-6818c51d323208aeb565d2018dce3afa:v1.1
       name: server
       env:
         - name: ISSUER_URL

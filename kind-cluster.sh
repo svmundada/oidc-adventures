@@ -1,22 +1,3 @@
-# kind create cluster --config - <<EOF
-# kind: Cluster
-# apiVersion: kind.x-k8s.io/v1alpha4
-# featureGates:
-#   ServiceAccountIssuerDiscovery: true
-# networking:
-#   apiServerPort: 6443
-# kubeadmConfigPatches:
-# - |
-#   apiVersion: kubeadm.k8s.io/v1beta2
-#   kind: ClusterConfiguration
-#   apiServer:
-#     extraArgs:
-#       service-account-issuer: https://kubernetes.default.svc:443
-#       service-account-jwks-uri: https://kubernetes.default.svc:443/openid/v1/jwks
-#       service-account-signing-key-file: /etc/kubernetes/pki/sa.key
-#       service-account-key-file: /etc/kubernetes/pki/sa.pub
-# EOF
-
 #!/bin/sh
 set -o errexit
 
@@ -68,30 +49,6 @@ data:
     help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
 EOF
 
-
 kubectl create clusterrolebinding oidc-reviewer \
 --clusterrole=system:service-account-issuer-discovery \
 --group=system:unauthenticated
-
-# kubectl apply -f - <<EOF
-# apiVersion: v1
-# kind: Pod
-# metadata:
-#   name: nginx
-# spec:
-#   serviceAccountName: default
-#   containers:
-#     - image: nginx:alpine
-#       name: oidc
-#       volumeMounts:
-#         - mountPath: /var/run/secrets/tokens
-#           name: oidc-token
-#   volumes:
-#     - name: oidc-token
-#       projected:
-#         sources:
-#           - serviceAccountToken:
-#               path: oidc-token
-#               expirationSeconds: 7200
-#               audience: vault
-# EOF

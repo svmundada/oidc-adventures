@@ -48,6 +48,7 @@ func main() {
 				fmt.Println(err)
 				os.Exit(1)
 			}
+			fmt.Printf("token:\n%s\n", token)
 			req.Header.Add("Authorization", token)
 			resp, err := http.DefaultClient.Do(req)
 			if err != nil {
