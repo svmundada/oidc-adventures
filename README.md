@@ -135,31 +135,22 @@ Client will use this JWT from filesystem (`/var/run/secrets/tokens/oidc-token`) 
 
 ## Steps to run this project:
 
-1. Set up kind cluster and local registry `bash kind-cluster.sh`
-  - Above script creates a kind cluster and configures containerd to use local docker registry. 
-  - Provides projected service accounts arguments for api-server
-      ```
-        apiServer:
-          extraArgs:
-            service-account-issuer: https://kubernetes.default.svc:443
-            service-account-jwks-uri: https://kubernetes.default.svc:443/openid/v1/jwks
-            service-account-signing-key-file: /etc/kubernetes/pki/sa.key
-            service-account-key-file: /etc/kubernetes/pki/sa.pub  
-      ```
+1. `bash kind-cluster.sh`. This sets up the k8s-cluster, docker registry and required OIDC settings.  
 2. Make sure local registry is up and running by `curl -vk localhost:5000/v2/_catalog`
 3. Build client and server.
   - `export KO_DOCKER_REPO=localhost:5000/oidc-adventures`
-  - `ko publish ./cmd/client -t v1`
-  - `ko publish ./cmd/server -t v1`
+  - `ko publish ./cmd/client -t v2`
+  - `ko publish ./cmd/server -t v2`
 4. Deploy client and server
   - `kubectl config use-context kind-kind`
   - `kubectl apply -f config/`
 5. check logs
   - `kubectl logs client -f`
   - Another terminal window `kubectl logs server -f`
+6. For fun, try changing `audience` parameter is either server or client to see what happens.
+7. For fun, try deleting `oidc-reviewer` clusterrolebinding.
 
-
-# Reference:
+# References:
 - https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection
 - https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-issuer-discovery
 - https://banzaicloud.com/blog/kubernetes-oidc/ 
