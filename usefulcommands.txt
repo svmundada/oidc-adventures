@@ -1,0 +1,1 @@
+crypto jwt verify -iss=https://kubernetes.default.svc:443 --aud=adventures --subtle --insecure --key=key
