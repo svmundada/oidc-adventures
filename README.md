@@ -1,4 +1,4 @@
-# OIDC Adventures in Kuberentes Land
+# OIDC Adventures in Kubernetes Land
 
 ## What is OIDC ?
 OIDC: OpenId Connect. It is a authentication/authorisation protocol based on oauth 2.0 flows.
