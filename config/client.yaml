@@ -4,7 +4,7 @@ metadata:
   name: client
 spec:
   containers:
-    - image: localhost:5000/smundada/oidc-adventures/client-58bf3581096f28f603bcda285193bbb5:v1.1@sha256:9cd18d78ab04d889a8f77b95bc22c2c542ea003022fab86f0154f7e94be37acb
+    - image: localhost:5000/oidc-adventures/client-58bf3581096f28f603bcda285193bbb5:v2@sha256:e24900b79e0c77efb242a09e26620a44e8bad3349751d08fdde813c5bc10b88f
       name: client
       volumeMounts:
         - mountPath: /var/run/secrets/tokens
@@ -14,7 +14,7 @@ spec:
           value: /var/run/secrets/tokens/oidc-token
         - name: OIDC_REQUIRED_SERVER
           value: http://server.default:80
-      imagePullPolicy: IfNotPresent              
+      imagePullPolicy: IfNotPresent
   volumes:
     - name: oidc-token
       projected:
