@@ -13,7 +13,7 @@ On request, Kubernetes can mount a token on pod's filesystem (unique to Pod). Th
 
 This is very powerful pattern and it has been utilized at so many places for eg:
 - [ack-controllers](https://aws-controllers-k8s.github.io/community/) (Provision AWS resources as Kuberentes YAML)
-- cosign keyless signing ([must read](https://blog.chainguard.dev/zero-friction-keyless-signing-with-kubernetes/))
+- [Zero-friction “keyless signing” with Kubernetes](https://blog.chainguard.dev/zero-friction-keyless-signing-with-kubernetes/) (Sign container images with trusted service accounts!)
 
 To summarise:
 > Provides a general framework for any third party service to validate - if requests are coming from an already trusted kuberentes cluster.
