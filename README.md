@@ -83,9 +83,13 @@ We rely on Kubernetes' API-Server as issuer for the JWTs, hence we need to provi
       service-account-key-file: /etc/kubernetes/pki/sa.pub  
 ```
 `service-account-issuer`: As per OIDC spec, which entity is the issuer, in our case we keep it has api-server's incluster url.
+
 `service-account-jwks-uri`: As per OIDC spec, validators reach to specific path on the `issuer` which is `/openid/v1/jwks` for finding public keys required to validate the OIDC token.
+
 `service-account-signing-key-file`: Private key to used by API-Server while signing JWTs, here we are taking a shortcut and using already present key value pair. This is the private part.
+
 `service-account-key-file`: This is the public part used for verification of JWTs.
+
 
 As mentioned before, Projected Service Account Tokens is beta feature which needs to be explicity enabled, if your cluster does not support it (v1.20 was GA). 
 
